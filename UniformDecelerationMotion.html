@@ -1,0 +1,111 @@
+<!--前情提要:
+    【矢量】亦称“向量”：有大小而没有方向的物理量（体积，温度）
+    【标量】亦称“无向量”：有大小也有方向的物理量（速度，动量，力）
+
+    # 基本奥义
+    > 速度既有大小又有方向，速度的大小在数值上等于物体在单位时间内发生的位移大小，速度的方向就是物体运动的方向.
+
+    ## 2. 缓冲运动(匀减速直线运动)
+    > 缓冲运动的奥义在于  **"速度的大小是在每时每刻在递减"**
+    例子:火车进站
+        也就是说,速度与距离成正比
+            (距离值越大,速度值越大;距离值越小,速度值越小)
+            从而达到一个缓冲的效果
+            所以速度初始值很大
+            (目标值 - 当前值) = 速度(同时包含大小和方向)
+             0     -   (-200) = 200
+             -200  -   0     = -200
+    -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <style>
+        body, div, span {
+            margin: 0;
+            padding: 0;
+        }
+
+        #div1 {
+            width: 200px;
+            height: 200px;
+            background: red;
+            position: relative;
+            left: -200px;
+            top: 0;
+        }
+
+        #div1 span {
+            width: 20px;
+            height: 50px;
+            color:#fff;
+            background: blue;
+            position: absolute;
+            left: 200px;
+            top: 75px;
+        }
+    </style>
+    <script>
+        /*函数的作用就是：化繁为简，减少重复的劳作，从而提高效率*/
+        window.onload = function(){
+            var oDiv = document.getElementById('div1');
+            oDiv.onmouseover = function () {
+                startMove(0);
+            }
+            oDiv.onmouseout = function () {
+                startMove(-200);
+            }
+        }
+        var timer = null;
+
+        /*两个函数的不同之处只有目标值和速度的方向*/
+        /*当两个方法长的极其相似时,就把不同的地方找出来作为参数传进去一个整合后的方法里*/
+
+        /*在功能完全相同的情况下,参数越少越好,所以要精简参数,剔除不必要的参数
+        *   综上所诉:目标值是必须的,而速度的大小可以写死,
+        *       而且速度的方向(正/负)可以通过目标值与当前值的"正负比较"得到*/
+
+        function startMove(target) {
+            clearInterval(timer);//避免定时器的叠加使其速度突然增大
+
+            var oDiv = document.getElementById('div1');
+            //获取这个div的对象，即使得oDiv这个对象能在本function中可用
+
+            timer = setInterval(function(){
+
+                /*匀减速运动的速度获取,要除于运动系数10，
+                    否则立刻从当前值到达目标值，完全看不出缓冲运动的精髓(效果)
+                    系数越小,速度越快(速度越小),
+                    系数越大,速度越慢(速度越大)*/
+                var speed = (target - oDiv.offsetLeft) / 10;//定义初始速度的大小
+                speed = speed > 0 ? Math.ceil(speed) : Math.floor(speed);
+
+
+
+                /*判断(当前值 == 目标值)?
+                    清除定时器:执行函数*/
+
+                if(oDiv.offsetLeft == target){
+                    clearInterval(timer);
+                }else{
+                    //位置从  当前值left(-200) -> 目标值left(0),速度为正(即,当前值 < 目标值)
+                    //位置从  目标值left(-200) <- 当前值left(0),速度为负(即, 当前值 > 目标值)
+                    oDiv.style.left= oDiv.offsetLeft+speed+'px';
+
+                }
+
+
+
+            },30)
+        }
+
+
+    </script>
+</head>
+<body>
+<div id="div1">
+    <span id="share">分享</span>
+</div>
+</body>
+</html>

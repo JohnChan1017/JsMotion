@@ -1,0 +1,86 @@
+<!--前情提要:
+        offset家族获取的物体相应的数值,数值,数值,重要的内容说三遍;
+        offsetWidth获取的盒模型(width+padding+border);
+        offsetHeight = height + padding + border;
+        offsetLeft = left + marginLeft;
+        offsetTop = top + marginTop;
+
+-->
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <style>
+        #div1{
+            width: 200px;
+            height: 200px;
+            background: #f00;
+            border:6px solid #000;
+            font-size: 14px;
+            color: #fff;
+        }
+    </style>
+    <script>
+        window.onload = function () {
+            startMove();
+        }
+        var timer = null;
+        function startMove() {
+            // clearInterval(timer);
+            timer = setInterval(function(){
+                var oDiv = document.getElementById('div1');
+                // alert(oDiv.offsetWidth);
+                // oDiv.style.width = oDiv.offsetWidth-1+'px';
+                //可以把盒子的width写到行内样式中，如下，这是无论border怎么改都不会影响盒子的宽度了
+                // oDiv.style.width = parseInt(oDiv.offsetWidth)-1+'px';
+                // oDiv.style.width = parseInt(getStyle(oDiv,'width'))-1+'px';
+
+                // oDiv.style.fontSize = parseInt(getStyle(oDiv,'fontSize')) + 1 +'px';
+                // oDiv.style.borderWidth = parseInt(getStyle(oDiv,'borderWidth'))+1+'px';
+
+                // 原本想设置oDiv的宽 = 当前的宽 - 1;
+                /*结果变成201 = 202  -  1
+                *        201比原来的盒子宽度还多1,于是宽度变成201
+                *        201的盒子宽度+2px的border = 203的宽度
+                *        202 = 203 - 1;
+                * */
+                console.log(typeof getStyle(oDiv,'width'));
+
+            },30);
+
+        }
+        /**
+         * border的属性
+         *      border-width : thin / medium / thick / length / inherit
+         *      border-style :
+         *          none / hidden [IE7及以下尚不支持,outline没有hidden,outline是css2]/
+         *          dotted(点状边框)[IE6下显示dashed] /
+         *          dashed(虚线边框) /
+         *          solid (实线边框) /
+         *          double (双线轮廓。两条单线与其间隔的和等于指定的border-width值)
+         *
+         *      border-color
+         *      缩写时一定要按照顺序来写
+         * /
+
+        /**
+         *
+         * @param obj      想要获取样式的对象
+         * @param name     不可以值缩写，每个样式的属性名都要很精确，例：只能写borderWidth，不能写boder
+         * @returns {*}
+         */
+        function getStyle(obj,name) {
+            if(obj.currentStyle){   //IE
+                return obj.currentStyle[name];
+            }else{
+                return getComputedStyle(obj,false)[name];  //ff,chrome等主流浏览器
+            }
+        }
+    </script>
+</head>
+<body>
+<div id="div1">font-size</div>
+</body>
+</html>

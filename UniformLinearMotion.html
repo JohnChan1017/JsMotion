@@ -1,0 +1,104 @@
+<!--前情提要:
+    【矢量】亦称“向量”：有大小而没有方向的物理量（体积，温度）
+    【标量】亦称“无向量”：有大小也有方向的物理量（速度，动量，力）
+
+    # 基本奥义
+    > 速度既有大小又有方向，速度的大小在数值上等于物体在单位时间内发生的位移大小，速度的方向就是物体运动的方向.-->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <style>
+        body, div, span {
+            margin: 0;
+            padding: 0;
+        }
+
+        #div1 {
+            width: 200px;
+            height: 200px;
+            background: red;
+            position: relative;
+            left: -200px;
+            top: 0;
+        }
+
+        #div1 span {
+            width: 20px;
+            height: 50px;
+            color:#fff;
+            background: blue;
+            position: absolute;
+            left: 200px;
+            top: 75px;
+        }
+    </style>
+    <script>
+        /*函数的作用就是：化繁为简，减少重复的劳作，从而提高效率*/
+        window.onload = function(){
+            var oDiv = document.getElementById('div1');
+            oDiv.onmouseover = function () {
+                startMove(0);
+            }
+            oDiv.onmouseout = function () {
+                startMove(-200);
+            }
+        }
+        var timer = null;
+
+        /*两个函数的不同之处只有目标值和速度的方向*/
+        /*当两个方法长的极其相似时,就把不同的地方找出来作为参数传进去一个整合后的方法里*/
+
+        /*在功能完全相同的情况下,参数越少越好,所以要精简参数,剔除不必要的参数
+        *   综上所诉:目标值是必须的,而速度的大小可以写死,
+        *       而且速度的方向(正/负)可以通过目标值与当前值的"正负比较"得到*/
+
+        function startMove(target) {
+           clearInterval(timer);//避免定时器的叠加使其速度突然增大
+
+            var oDiv = document.getElementById('div1');
+            //获取这个div的对象，即使得oDiv这个对象能在本function中可用
+
+            timer = setInterval(function(){
+                var speed = 0;//定义初始速度的大小
+
+                //确定速度的方向，同时给予速度固定的大小(10)
+                if(oDiv.offsetLeft > target){
+                    speed = -10;
+                }
+                if(oDiv.offsetLeft < target){
+                    speed = 10;
+                }
+                //oDiv.style.left = oDiv的当前值+10px(每30毫秒)
+                //第一次 -190 =  -200 +    10
+                //第二次 -180 =  -190 +    10
+                //让它不断的走10个px
+
+
+                /*判断(当前值 == 目标值)?
+                    清除定时器:执行函数(从当前位置开始每秒加/减10px)*/
+
+                if(oDiv.offsetLeft == target){
+                    clearInterval(timer);
+                }else{
+                    //位置从  当前值left(-200) -> 目标值left(0),速度为正(即,当前值 < 目标值)
+                    //位置从  目标值left(-200) <- 当前值left(0),速度为负(即, 当前值 > 目标值)
+                    oDiv.style.left= oDiv.offsetLeft+speed+'px';
+
+                }
+
+
+
+            },30)
+        }
+
+
+    </script>
+</head>
+<body>
+    <div id="div1">
+        <span id="share">分享</span>
+    </div>
+</body>
+</html>

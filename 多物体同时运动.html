@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <style>
+        *{
+            margin: 0;
+            padding: 0;
+        }
+        ul,li{
+            list-style: none;
+        }
+        ul li{
+            width: 200px;
+            height: 100px;
+            background: yellow;
+            margin-bottom: 20px;
+            border: 2px solid #000;
+            filter: alpha(opacity:30);
+            opacity:0.3;
+        }
+    </style>
+    <script src="Util.js"></script>
+    <script>
+        window.onload = function () {
+          var Li1 = document.getElementById('li1');
+          Li1.onmouseover = function(){
+              startMove(Li1,{width:201,height:200,opacity:100});
+          }
+            Li1.onmouseout = function(){
+                startMove(Li1,{width:200,height:100,opacity:30});
+            }
+        }
+    </script>
+</head>
+<body>
+<ul>
+    <li id="li1"></li>
+    <!--<li id="li2"></li>-->
+</ul>
+</body>
+</html>
