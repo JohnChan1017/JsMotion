@@ -60,7 +60,7 @@ function startMove(obj,json,fn) {
         if(flag){//if flag 是true，则表示所有运动都到达目标值，然后停止定时器
             clearInterval(obj.timer);
             if(fn){
-                fn();
+                fn(); 
             }
         }
 
